@@ -27,10 +27,10 @@ class JobsSpider(scrapy.Spider):
 
     def parse_job_page(self, response):
         yield {
-            'title' : response.css('.top-card-layout__entity-info h1::text').get().strip(),
-            'location' : response.xpath("//div[@class='top-card-layout__entity-info']/h4[@class='top-card-layout__second-subline']/div[@class='topcard__flavor-row']/span[2]/text()").get().strip(),
-            'level' : response.xpath("//ul[@class='description__job-criteria-list']/li[1]/span/text()").get().strip(),
-            'type' : response.xpath("//ul[@class='description__job-criteria-list']/li[2]/span/text()").get().strip(),
-            'function' : response.xpath("//ul[@class='description__job-criteria-list']/li[3]/span/text()").get().strip(),
-            'description' : response.css("div.show-more-less-html__markup").get().strip()
+            'title' : response.css('.top-card-layout__entity-info h1::text').get(default='not-found').strip(),
+            'location' : response.css('.top-card-layout__entity-info h4 .topcard__flavor-row > span:nth-child(2)::text').get(default='not-found').strip(),
+            'level' : response.xpath("//ul[@class='description__job-criteria-list']/li[1]/span/text()").get(default='not-found').strip(),
+            'type' : response.xpath("//ul[@class='description__job-criteria-list']/li[2]/span/text()").get(default='not-found').strip(),
+            'function' : response.xpath("//ul[@class='description__job-criteria-list']/li[3]/span/text()").get(default='not-found').strip(),
+            'description' : response.css("div.show-more-less-html__markup").get(default='not-found').strip()
         }
