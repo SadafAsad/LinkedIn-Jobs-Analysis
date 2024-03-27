@@ -15,7 +15,8 @@ class JobsSpider(scrapy.Spider):
 
         for job in jobs:
             job_url = job.css(".base-card__full-link::attr(href)").get(default='not-found').strip()
-            yield scrapy.Request(url=job_url, callback=self.parse_job_page)
+            if job_url!="not-found":
+                yield scrapy.Request(url=job_url, callback=self.parse_job_page)
 
         first_job_on_page = response.meta['first_job_on_page']
         num_jobs_returned = len(jobs)
@@ -25,4 +26,11 @@ class JobsSpider(scrapy.Spider):
             yield scrapy.Request(url=next_url, callback=self.parse_job, meta={'first_job_on_page': first_job_on_page})
 
     def parse_job_page(self, response):
-        pass
+        yield {
+            'title' : response.css('.top-card-layout__entity-info h1::text').get().strip(),
+            'location' : response.xpath("//div[@class='top-card-layout__entity-info']/h4[@class='top-card-layout__second-subline']/div[@class='topcard__flavor-row']/span[2]/text()").get().strip(),
+            'level' : response.xpath("//ul[@class='description__job-criteria-list']/li[1]/span/text()").get().strip(),
+            'type' : response.xpath("//ul[@class='description__job-criteria-list']/li[2]/span/text()").get().strip(),
+            'function' : response.xpath("//ul[@class='description__job-criteria-list']/li[3]/span/text()").get().strip(),
+            'description' : response.css("div.show-more-less-html__markup").get().strip()
+        }
