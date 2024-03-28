@@ -14,7 +14,9 @@ NEWSPIDER_MODULE = "jobscraper.spiders"
 
 SCRAPEOPS_API_KEY = 'bf880102-9b3a-462b-959c-01e1cfc0572f'
 SCRAPEOPS_FAKE_USER_AGENT_ENDPOINT = 'https://headers.scrapeops.io/v1/user-agents'
+SCRAPEOPS_FAKE_BROWSER_HEADER_ENDPOINT = 'https://headers.scrapeops.io/v1/browser-headers'
 SCRAPEOPS_FAKE_USER_AGENT_ENABLED = True
+SCRAPEOPS_FAKE_BROWSER_HEADER_ENABLED = True
 SCRAPEOPS_NUM_RESULTS = 50
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
@@ -56,7 +58,8 @@ ROBOTSTXT_OBEY = False
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
 #    "jobscraper.middlewares.JobscraperDownloaderMiddleware": 543,
-   "jobscraper.middlewares.ScrapeOpsFakeUserAgentMiddleware": 400,
+#    "jobscraper.middlewares.ScrapeOpsFakeUserAgentMiddleware": 400,
+   "jobscraper.middlewares.ScrapeOpsFakeBrowserHeaderMiddleware": 400,
 }
 
 # Enable or disable extensions
