@@ -10,3 +10,11 @@ class JobscraperItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     pass
+
+class JobItem(scrapy.Item):
+    title = scrapy.Field()
+    location = scrapy.Field()
+    level = scrapy.Field()
+    type = scrapy.Field()
+    function = scrapy.Field()
+    description = scrapy.Field()
