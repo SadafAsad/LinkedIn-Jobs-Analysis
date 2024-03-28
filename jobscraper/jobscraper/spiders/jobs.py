@@ -1,4 +1,5 @@
 import scrapy
+from jobscraper.items import JobItem
 
 class JobsSpider(scrapy.Spider):
     name = 'jobs'
@@ -26,11 +27,13 @@ class JobsSpider(scrapy.Spider):
             yield scrapy.Request(url=next_url, callback=self.parse_job, meta={'first_job_on_page': first_job_on_page})
 
     def parse_job_page(self, response):
-        yield {
-            'title' : response.css('.top-card-layout__entity-info h1::text').get(default='not-found').strip(),
-            'location' : response.css('.top-card-layout__entity-info h4 .topcard__flavor-row > span:nth-child(2)::text').get(default='not-found').strip(),
-            'level' : response.xpath("//ul[@class='description__job-criteria-list']/li[1]/span/text()").get(default='not-found').strip(),
-            'type' : response.xpath("//ul[@class='description__job-criteria-list']/li[2]/span/text()").get(default='not-found').strip(),
-            'function' : response.xpath("//ul[@class='description__job-criteria-list']/li[3]/span/text()").get(default='not-found').strip(),
-            'description' : response.css("div.show-more-less-html__markup").get(default='not-found').strip()
-        }
+        job_item = JobItem()
+
+        job_item['title'] = response.css(".top-card-layout__entity-info h1::text").get(default='not-found').strip()
+        job_item['location'] = response.css(".top-card-layout__entity-info h4 .topcard__flavor-row > span:nth-child(2)::text").get(default='not-found').strip()
+        job_item['level'] = response.xpath("//ul[@class='description__job-criteria-list']/li[1]/span/text()").get(default='not-found').strip()
+        job_item['type'] = response.xpath("//ul[@class='description__job-criteria-list']/li[2]/span/text()").get(default='not-found').strip()
+        job_item['function'] = response.xpath("//ul[@class='description__job-criteria-list']/li[3]/span/text()").get(default='not-found').strip()
+        job_item['description'] = [text.strip() for text in response.css("div.show-more-less-html__markup *::text").getall()]
+
+        yield job_item
