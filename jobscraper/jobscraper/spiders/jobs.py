@@ -1,5 +1,13 @@
 import scrapy
 from jobscraper.items import JobItem
+from urllib.parse import urlencode
+
+# API_KEY = 'bf880102-9b3a-462b-959c-01e1cfc0572f'
+
+# def get_proxy_url(url):
+#     payload = {'api_key': API_KEY, 'url': url}
+#     proxy_url = 'https://proxy.scrapeops.io/v1/?' + urlencode(payload)
+#     return proxy_url
 
 class JobsSpider(scrapy.Spider):
     name = 'jobs'

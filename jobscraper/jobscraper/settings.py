@@ -12,17 +12,20 @@ BOT_NAME = "jobscraper"
 SPIDER_MODULES = ["jobscraper.spiders"]
 NEWSPIDER_MODULE = "jobscraper.spiders"
 
-SCRAPEOPS_API_KEY = 'bf880102-9b3a-462b-959c-01e1cfc0572f'
-SCRAPEOPS_FAKE_USER_AGENT_ENDPOINT = 'https://headers.scrapeops.io/v1/user-agents'
-SCRAPEOPS_FAKE_BROWSER_HEADER_ENDPOINT = 'https://headers.scrapeops.io/v1/browser-headers'
-SCRAPEOPS_FAKE_USER_AGENT_ENABLED = True
-SCRAPEOPS_FAKE_BROWSER_HEADER_ENABLED = True
-SCRAPEOPS_NUM_RESULTS = 50
+# SCRAPEOPS_API_KEY = 'bf880102-9b3a-462b-959c-01e1cfc0572f'
+# SCRAPEOPS_FAKE_USER_AGENT_ENDPOINT = 'https://headers.scrapeops.io/v1/user-agents'
+# SCRAPEOPS_FAKE_BROWSER_HEADER_ENDPOINT = 'https://headers.scrapeops.io/v1/browser-headers'
+# SCRAPEOPS_FAKE_USER_AGENT_ENABLED = True
+# SCRAPEOPS_FAKE_BROWSER_HEADER_ENABLED = True
+# SCRAPEOPS_NUM_RESULTS = 50
 
-PROXY_USER = ''
-PROXY_PASSWORD = ''
-PROXY_ENDPOINT = ''
-PROXY_PORT = ''
+# PROXY_USER = ''
+# PROXY_PASSWORD = ''
+# PROXY_ENDPOINT = ''
+# PROXY_PORT = ''
+
+SCRAPEOPS_API_KEY = 'bf880102-9b3a-462b-959c-01e1cfc0572f'
+SCRAPEOPS_PROXY_ENABLED = True
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = "jobscraper (+http://www.yourdomain.com)"
@@ -65,7 +68,8 @@ DOWNLOADER_MIDDLEWARES = {
 #    "jobscraper.middlewares.JobscraperDownloaderMiddleware": 543,
 #    "jobscraper.middlewares.ScrapeOpsFakeUserAgentMiddleware": 400,
 #    "jobscraper.middlewares.ScrapeOpsFakeBrowserHeaderMiddleware": 400,
-    "jobscraper.middlewares.MyProxyMiddleware": 350,
+    # "jobscraper.middlewares.MyProxyMiddleware": 350,
+    "scrapeops_scrapy_proxy_sdk.scrapeops_scrapy_proxy_sdk.ScrapeOpsScrapyProxySdk": 725,
 }
 
 # Enable or disable extensions
