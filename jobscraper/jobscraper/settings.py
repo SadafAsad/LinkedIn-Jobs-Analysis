@@ -26,6 +26,7 @@ NEWSPIDER_MODULE = "jobscraper.spiders"
 
 SCRAPEOPS_API_KEY = 'bf880102-9b3a-462b-959c-01e1cfc0572f'
 SCRAPEOPS_PROXY_ENABLED = True
+# SCRAPEOPS_PROXY_SETTINGS = {'country': 'us'}
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = "jobscraper (+http://www.yourdomain.com)"
