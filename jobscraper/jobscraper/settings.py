@@ -19,6 +19,11 @@ SCRAPEOPS_FAKE_USER_AGENT_ENABLED = True
 SCRAPEOPS_FAKE_BROWSER_HEADER_ENABLED = True
 SCRAPEOPS_NUM_RESULTS = 50
 
+PROXY_USER = ''
+PROXY_PASSWORD = ''
+PROXY_ENDPOINT = ''
+PROXY_PORT = ''
+
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = "jobscraper (+http://www.yourdomain.com)"
 
@@ -59,7 +64,8 @@ ROBOTSTXT_OBEY = False
 DOWNLOADER_MIDDLEWARES = {
 #    "jobscraper.middlewares.JobscraperDownloaderMiddleware": 543,
 #    "jobscraper.middlewares.ScrapeOpsFakeUserAgentMiddleware": 400,
-   "jobscraper.middlewares.ScrapeOpsFakeBrowserHeaderMiddleware": 400,
+#    "jobscraper.middlewares.ScrapeOpsFakeBrowserHeaderMiddleware": 400,
+    "jobscraper.middlewares.MyProxyMiddleware": 350,
 }
 
 # Enable or disable extensions
