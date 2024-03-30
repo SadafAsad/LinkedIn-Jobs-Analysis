@@ -13,7 +13,7 @@ class JobsSpider(scrapy.Spider):
     name = 'jobs'
     # api_url = 'https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?start='
     countries = ['Canada', 'United States', 'United Kingdom', 'Australia', 'Germany', 'Netherlands', 'Switzerland', 'Japan', 'Singapore', 'India']
-    api_url = 'https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=Data%2BEngineering&location={country}&f_TPR=r2592000&start=''
+    api_url = 'https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=Data%2BEngineering&location={country}&f_TPR=r2592000&start='
 
     def start_requests(self):
         for country in self.countries:
