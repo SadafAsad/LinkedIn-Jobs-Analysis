@@ -12,11 +12,15 @@ from urllib.parse import urlencode
 class JobsSpider(scrapy.Spider):
     name = 'jobs'
     # api_url = 'https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?start='
-    countries = ['Canada', 'United States', 'United Kingdom', 'Australia', 'Germany', 'Netherlands', 'Switzerland', 'Japan', 'Singapore', 'India']
-    api_url = 'https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=Data%2BEngineering&location={country}&f_TPR=r2592000&start='
+    # countries = ['Canada', 'United States', 'United Kingdom', 'Australia', 'Germany', 'Netherlands', 'Switzerland', 'Japan', 'Singapore', 'India']
+    countries = ['Canada', 'United States', 'United Kingdom', 'Australia']
+    api_url = 'https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=Data%2BEngineering&location={country}&f_TPR=r604800&start='
+    jobs_per_country_limit = 500
+    jobs_scraped_per_country = {}
 
     def start_requests(self):
         for country in self.countries:
+            self.jobs_scraped_per_country[country] = 0
             first_job_on_page = 0
             first_url = self.api_url.format(country=country) + str(first_job_on_page)
             yield scrapy.Request(url=first_url, callback=self.parse_job, meta={'first_job_on_page': first_job_on_page, 'country': country})
@@ -25,15 +29,17 @@ class JobsSpider(scrapy.Spider):
     def parse_job(self, response):
         jobs = response.css('li')
 
-        for job in jobs:
-            job_url = job.css(".base-card__full-link::attr(href)").get(default='not-found').strip()
-            if job_url!="not-found":
-                yield scrapy.Request(url=job_url, callback=self.parse_job_page)
-
         first_job_on_page = response.meta['first_job_on_page']
         country = response.meta['country']
         num_jobs_returned = len(jobs)
-        if num_jobs_returned > 0:
+
+        for job in jobs:
+            job_url = job.css(".base-card__full-link::attr(href)").get(default='not-found').strip()
+            if job_url!="not-found":
+                self.jobs_scraped_per_country[country]+=1
+                yield scrapy.Request(url=job_url, callback=self.parse_job_page)
+
+        if num_jobs_returned > 0 and self.jobs_scraped_per_country[country] < self.jobs_per_country_limit:
             first_job_on_page = int(first_job_on_page) + num_jobs_returned
             next_url = self.api_url.format(country=country) + str(first_job_on_page)
             yield scrapy.Request(url=next_url, callback=self.parse_job, meta={'first_job_on_page': first_job_on_page, 'country': country})
