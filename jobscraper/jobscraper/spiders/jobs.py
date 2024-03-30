@@ -11,12 +11,15 @@ from urllib.parse import urlencode
 
 class JobsSpider(scrapy.Spider):
     name = 'jobs'
-    api_url = 'https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?start=' 
+    # api_url = 'https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?start='
+    countries = ['Canada', 'United States', 'United Kingdom', 'Australia', 'Germany', 'Netherlands', 'Switzerland', 'Japan', 'Singapore', 'India']
+    api_url = 'https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=Data%2BEngineering&location={country}&f_TPR=r2592000&start=''
 
     def start_requests(self):
-        first_job_on_page = 0
-        first_url = self.api_url + str(first_job_on_page)
-        yield scrapy.Request(url=first_url, callback=self.parse_job, meta={'first_job_on_page': first_job_on_page})
+        for country in self.countries:
+            first_job_on_page = 0
+            first_url = self.api_url.format(country=country) + str(first_job_on_page)
+            yield scrapy.Request(url=first_url, callback=self.parse_job, meta={'first_job_on_page': first_job_on_page, 'country': country})
 
 
     def parse_job(self, response):
@@ -28,11 +31,12 @@ class JobsSpider(scrapy.Spider):
                 yield scrapy.Request(url=job_url, callback=self.parse_job_page)
 
         first_job_on_page = response.meta['first_job_on_page']
+        country = response.meta['country']
         num_jobs_returned = len(jobs)
         if num_jobs_returned > 0:
             first_job_on_page = int(first_job_on_page) + num_jobs_returned
-            next_url = self.api_url + str(first_job_on_page)
-            yield scrapy.Request(url=next_url, callback=self.parse_job, meta={'first_job_on_page': first_job_on_page})
+            next_url = self.api_url.format(country=country) + str(first_job_on_page)
+            yield scrapy.Request(url=next_url, callback=self.parse_job, meta={'first_job_on_page': first_job_on_page, 'country': country})
 
     def parse_job_page(self, response):
         job_item = JobItem()
