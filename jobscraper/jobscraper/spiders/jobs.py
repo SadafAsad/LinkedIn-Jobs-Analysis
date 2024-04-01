@@ -1,18 +1,8 @@
 import scrapy
 from jobscraper.items import JobItem
-from urllib.parse import urlencode
-
-# API_KEY = 'bf880102-9b3a-462b-959c-01e1cfc0572f'
-
-# def get_proxy_url(url):
-#     payload = {'api_key': API_KEY, 'url': url}
-#     proxy_url = 'https://proxy.scrapeops.io/v1/?' + urlencode(payload)
-#     return proxy_url
 
 class JobsSpider(scrapy.Spider):
     name = 'jobs'
-    # api_url = 'https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?start='
-    # countries = ['Canada', 'United States', 'United Kingdom', 'Australia', 'Germany', 'Netherlands', 'Switzerland', 'Japan', 'Singapore', 'India']
     countries = ['Canada', 'United States', 'United Kingdom', 'Australia']
     api_url = 'https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=Data%2BEngineering&location={country}&f_TPR=r604800&start='
     jobs_per_country_limit = 500
@@ -37,7 +27,7 @@ class JobsSpider(scrapy.Spider):
             job_url = job.css(".base-card__full-link::attr(href)").get(default='not-found').strip()
             if job_url!="not-found":
                 self.jobs_scraped_per_country[country]+=1
-                yield scrapy.Request(url=job_url, callback=self.parse_job_page)
+                yield scrapy.Request(url=job_url, callback=self.parse_job_page, meta={'country': country})
 
         if num_jobs_returned > 0 and self.jobs_scraped_per_country[country] < self.jobs_per_country_limit:
             first_job_on_page = int(first_job_on_page) + num_jobs_returned
@@ -47,6 +37,7 @@ class JobsSpider(scrapy.Spider):
     def parse_job_page(self, response):
         job_item = JobItem()
 
+        job_item['country'] = response.meta['country']
         job_item['title'] = response.css(".top-card-layout__entity-info h1::text").get(default='not-found').strip()
         job_item['location'] = response.css(".top-card-layout__entity-info h4 .topcard__flavor-row > span:nth-child(2)::text").get(default='not-found').strip()
         job_item['level'] = response.xpath("//ul[@class='description__job-criteria-list']/li[1]/span/text()").get(default='not-found').strip()

@@ -12,6 +12,7 @@ class JobscraperItem(scrapy.Item):
     pass
 
 class JobItem(scrapy.Item):
+    country = scrapy.Field()
     title = scrapy.Field()
     location = scrapy.Field()
     level = scrapy.Field()
