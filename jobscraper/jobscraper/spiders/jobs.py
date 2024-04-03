@@ -5,7 +5,7 @@ class JobsSpider(scrapy.Spider):
     name = 'jobs'
     countries = ['Canada', 'United States', 'United Kingdom', 'Australia']
     api_url = 'https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=Data%2BEngineering&location={country}&f_TPR=r604800&start='
-    jobs_per_country_limit = 5
+    jobs_per_country_limit = 500
     jobs_scraped_per_country = {}
 
     def start_requests(self):

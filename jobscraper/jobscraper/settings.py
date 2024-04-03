@@ -15,8 +15,7 @@ NEWSPIDER_MODULE = "jobscraper.spiders"
 SCRAPEOPS_API_KEY = 'bf880102-9b3a-462b-959c-01e1cfc0572f'
 SCRAPEOPS_PROXY_ENABLED = True
 
-FEED_URI = 's3://sdftest1/jobsdata.json'
-# FEED_URI = 's3://raw-linkedin-jobs/jobsdata.json'
+FEED_URI = 's3://raw-linkedin-jobs/jobsdata.json'
 FEED_FORMAT = 'json'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
