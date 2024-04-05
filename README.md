@@ -1,5 +1,5 @@
 # Data Engineering Job Market Analysis
-The Banks MC ETL Pipeline is a Python project with the primary objective of automating the extraction, transformation, and loading (ETL) process for banks' market capital data. Leveraging web scraping capabilities through Requests and BeautifulSoup. Subsequently, Pandas, numpy, SQLite, and Apache Airflow are utilized to create the project. Docker is used to containerize Airflow, ensuring a simplified deployment.
+The project aimed to automate the extraction, transformation, and analysis of Data Engineering job listings from LinkedIn across Canada, the United States, the United Kingdom, and Australia. Utilizing a custom Scrapy Spider for extraction, ScrapeOps for deployment, AWS Glue for transformation, and Athena/QuickSight for analysis, it provided valuable insights into the Data Engineering job market trends across the four regions.
 
 <p align="center">
   <img src="arch-v1.png" />
